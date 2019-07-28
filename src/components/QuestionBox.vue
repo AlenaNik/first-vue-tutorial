@@ -22,15 +22,19 @@
                     </b-list-group>
 
 
-                    <b-button variant="primary"
-                    @click="submitAnswer"
-                    :disabled="selectedIndex === null || answered"
-                    >Sumbit</b-button>
-                        <b-button @click="next" variant="success" href="#">Next</b-button>
+                    <b-button
+                            variant="primary"
+                            @click="submitAnswer"
+                            :disabled="selectedIndex === null || answered"
+                    >
+                        Submit
+                    </b-button>
+                    <b-button @click="next" variant="success">
+                        Next
+                    </b-button>
                 </b-jumbotron>
         </div>
 </template>
-
 <script>
     import _ from 'lodash';
     export default {
@@ -80,6 +84,20 @@
                 let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
                 this.shuffleAnswers = _.shuffle(answers)
                 this.correctIndex = this.shuffleAnswers.indexOf(this.currentQuestion.correct_answer)
+            },
+            answerClass(index) {
+                let answerClass = ''
+                if (!this.answered && this.selectedIndex === index) {
+                    answerClass = 'selected'
+                } else if (this.answered && this.correctIndex === index) {
+                    answerClass = 'correct'
+                } else if (this.answered &&
+                    this.selectedIndex === index &&
+                    this.correctIndex !== index
+                ) {
+                    answerClass = 'incorrect'
+                }
+                return answerClass
             }
         }
     }
